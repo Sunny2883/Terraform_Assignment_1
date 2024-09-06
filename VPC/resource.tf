@@ -1,3 +1,3 @@
-resource "aws_vpc" "vpc_assignment_1" {
+resource "aws_vpc" "this" {
   cidr_block = var.cidr_block
 }
