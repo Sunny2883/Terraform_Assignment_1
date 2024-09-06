@@ -3,9 +3,7 @@ resource "aws_launch_template" "ecs_launch_tempelate" {
   instance_type = var.instance_type
   user_data = var.user_data
   key_name = var.keyname
-  iam_instance_profile {
-    name = "ecsInstanceRole"
-  }
+
   network_interfaces {
     associate_public_ip_address = true
     security_groups = [var.security_group_id]

@@ -1,6 +1,6 @@
 module "s3_bucket" {
   source      = "./S3_bucket"
-  bucket_name = "react-app-bucket-assignment-1"
+  bucket_name = "asdfghuy"
 }
 
 module "VPC" {
@@ -11,8 +11,9 @@ module "VPC" {
 module "subnet" {
   source     = "./Subnet"
   vpc_id     = module.VPC.vpc_id
-  cidr_block = "192.168.1.0/24"
-
+  cidr_block_public_subnet =   ["192.168.1.0/24", "192.168.2.0/24"]
+  azs = ["ap-south-1a", "ap-south-1b"]
+  
 }
 
 module "security_group_assignment_1" {
@@ -24,9 +25,9 @@ module "security_group_assignment_1" {
 module "ASG" {
   source            = "./ASG"
   image_id          = "ami-0522ab6e1ddcc7055"
-  subnet            = [module.subnet.subnet_id]
+  subnet            = module.subnet.subnet_id
   security_group_id = module.security_group_assignment_1.security_group_id
-  load_balancer     = ""
+  load_balancer     = module.ALB.alb_arn
   health_check_type = "EC2"
   desired_capacity  = 1
   asg_name          = "asg_assignment_1"
@@ -34,8 +35,17 @@ module "ASG" {
   max_size          = 2
   name              = ""
   instance_type     = "t2.micro"
-  keyname           = "sunny"
-  target_group_arn  = ""
+  keyname           = "Project"
+  target_group_arn  = module.ALB.backend_target_group_arn
   user_data         = ""
-  alb_arn           = ""
+  alb_arn           = module.ALB.backend_target_group_arn
+}
+
+module "ALB" {
+  source          = "./ALB"
+  vpc_id          = module.VPC.vpc_id
+  target_type     = "instance"
+  security_groups = [module.security_group_assignment_1.security_group_id]
+  subnets         = module.subnet.subnet_id
+  name            = "ALB_assignment_1"
 }
