@@ -3,7 +3,9 @@ resource "aws_launch_template" "ecs_launch_tempelate" {
   instance_type = var.instance_type
   user_data = var.user_data
   key_name = var.keyname
-
+  iam_instance_profile {
+    name = var.iam_instance_profile_name
+  }
   network_interfaces {
     associate_public_ip_address = true
     security_groups = [var.security_group_id]
@@ -20,6 +22,7 @@ resource "aws_autoscaling_group" "ASG_assignment_1" {
   desired_capacity          = var.desired_capacity
   force_delete              = true
   vpc_zone_identifier = var.subnet
+  #protect_from_scale_in  =
   target_group_arns = [var.target_group_arn]
   
 launch_template {

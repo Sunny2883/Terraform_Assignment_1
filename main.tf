@@ -9,11 +9,11 @@ module "VPC" {
 }
 
 module "subnet" {
-  source     = "./Subnet"
-  vpc_id     = module.VPC.vpc_id
-  cidr_block_public_subnet =   ["192.168.1.0/24", "192.168.2.0/24"]
-  azs = ["ap-south-1a", "ap-south-1b"]
-  
+  source                   = "./Subnet"
+  vpc_id                   = module.VPC.vpc_id
+  cidr_block_public_subnet = ["192.168.1.0/24", "192.168.2.0/24"]
+  azs                      = ["ap-south-1a", "ap-south-1b"]
+
 }
 
 module "security_group_assignment_1" {
@@ -24,7 +24,7 @@ module "security_group_assignment_1" {
 
 module "ASG" {
   source            = "./ASG"
-  image_id          = "ami-0522ab6e1ddcc7055"
+  image_id          = "ami-07c0f8a42b483e4cf"
   subnet            = module.subnet.subnet_id
   security_group_id = module.security_group_assignment_1.security_group_id
   load_balancer     = module.ALB.alb_arn
@@ -37,8 +37,9 @@ module "ASG" {
   instance_type     = "t2.micro"
   keyname           = "Project"
   target_group_arn  = module.ALB.backend_target_group_arn
-  user_data         = ""
+  user_data         = filebase64("./userdata.sh")
   alb_arn           = module.ALB.backend_target_group_arn
+  iam_instance_profile_name = module.Policy.ecs_instance_profile_name
 }
 
 module "ALB" {
@@ -49,3 +50,39 @@ module "ALB" {
   subnets         = module.subnet.subnet_id
   name            = "ALB_assignment_1"
 }
+
+module "ECS_Services" {
+  source           = "./ECS_Services"
+  ecs_service_name = "Service_assignment_1"
+  desired_count    = 1
+  task_definition = module.ECS_cluster.task_definition
+  cluster_arn = module.ECS_cluster.cluster_arn
+}
+
+module "ECS_cluster" {
+  source       = "./ECS_Cluster"
+  cluster_name = "cluster_assignment"
+  family_name  = "Assignment_family_1"
+  task_name    = "Assignment_task_1"
+  memory       = 512
+  cpu          = 256
+  image_url    = "396608771618.dkr.ecr.ap-south-1.amazonaws.com/projectimg:latest"
+  execution_role_arn = module.Policy.ecs_task_execution_role_arn
+  task_role_arn = module.Policy.ecs_task_role_arn
+  log_stream_prefix="assignment"
+  aws_region="ap-south-1"
+  log_group_name=module.cloudwatch.log_group_name
+  auto_scaling_group_arn = module.ASG.asg_arn
+}
+module "Policy" {
+  source = "./Policies"
+  
+}
+
+module "cloudwatch" {
+  source = "./Cloudwatch"
+  cloudwatch_name = "projectloggroup"
+  retention_in_days = "0"
+  log_group_class = "STANDARD"
+}
+

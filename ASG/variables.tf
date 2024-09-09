@@ -52,3 +52,7 @@ variable "target_group_arn" {
 variable "keyname" {
   type = string
 }
+
+variable "iam_instance_profile_name" {
+  type = string
+}

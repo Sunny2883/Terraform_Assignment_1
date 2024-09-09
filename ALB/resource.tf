@@ -19,7 +19,7 @@ resource "aws_lb_target_group" "this" {
 
 resource "aws_lb_listener" "listener" {
   load_balancer_arn = aws_alb.this.arn
-  port              = 80
+  port              = 8080
   protocol          = "HTTP"
 
   default_action {
