@@ -33,7 +33,10 @@ resource "aws_iam_policy" "ecs_task_execution_policy" {
           "ecr:BatchGetImage",
           "logs:CreateLogStream",
           "logs:PutLogEvents",
-          "logs:CreateLogGroup"
+          "logs:CreateLogGroup",
+          "ssm:GetParameter",               # Alloreadiindiviparameters
+          "ssm:GetParameters",              # Allow reading multiple parameters
+          "ssm:GetParametersByPath"         # Allow reading parameters by path 
         ],
         "Resource": "*"
       }

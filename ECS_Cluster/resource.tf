@@ -48,7 +48,25 @@ resource "aws_ecs_task_definition" "task_def" {
           "awslogs-region"        = var.aws_region
           "awslogs-stream-prefix" = var.log_stream_prefix
         }
-      }
+      },
+            secrets = [
+        {
+          name      = "AllowedHosts"
+          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/AllowedHosts"
+        },
+        {
+          name      = "ConnectionStrings__DefaultConnection"
+          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/ConnectionStrings__DefaultConnection"
+        },
+        {
+          name      = "Logging__LogLevel__Default"
+          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/Logging__LogLevel__Default"
+        },
+        {
+          name      = "Logging__LogLevel__Microsoft.AspNetCore"
+          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/Logging__LogLevel__Microsoft.AspNetCore"
+        }
+      ]
     }
   ])
 
