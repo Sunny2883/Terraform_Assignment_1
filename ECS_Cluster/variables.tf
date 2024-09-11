@@ -42,3 +42,16 @@ variable "log_stream_prefix" {
 variable "auto_scaling_group_arn" {
   type = string
 }
+
+variable "connection_address" {
+  type = string
+}
+variable "allowedhost" {
+  type = string
+}
+variable "Logging__LogLevel__Default" {
+  type = string
+}
+variable "Logging__LogLevel__Microsoft" {
+  type = string
+}

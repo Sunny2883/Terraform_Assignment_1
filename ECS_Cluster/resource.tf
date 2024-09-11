@@ -52,19 +52,19 @@ resource "aws_ecs_task_definition" "task_def" {
             secrets = [
         {
           name      = "AllowedHosts"
-          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/AllowedHosts"
+          valueFrom = var.allowedhost
         },
         {
           name      = "ConnectionStrings__DefaultConnection"
-          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/ConnectionStrings__DefaultConnection"
+          valueFrom = var.connection_address
         },
         {
           name      = "Logging__LogLevel__Default"
-          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/Logging__LogLevel__Default"
+          valueFrom = var.Logging__LogLevel__Default
         },
         {
           name      = "Logging__LogLevel__Microsoft.AspNetCore"
-          valueFrom = "arn:aws:ssm:us-east-1:396608771618:parameter/Logging__LogLevel__Microsoft.AspNetCore"
+          valueFrom = var.Logging__LogLevel__Microsoft
         }
       ]
     }

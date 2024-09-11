@@ -30,7 +30,7 @@ module "ASG" {
   load_balancer             = module.ALB.alb_arn
   health_check_type         = "EC2"
   desired_capacity          = 1
-  asg_name                  = "asg_assignment_1"
+  asg_name                  = "asg_assignment"
   min_size                  = 1
   max_size                  = 2
   name                      = ""
@@ -73,6 +73,10 @@ module "ECS_cluster" {
   aws_region             = "ap-south-1"
   log_group_name         = module.cloudwatch.log_group_name
   auto_scaling_group_arn = module.ASG.asg_arn
+  connection_address = module.parameter_store.parameter_name_arn
+  allowedhost = module.parameter_store.allwedhost_arn
+  Logging__LogLevel__Default = module.parameter_store.Logging__LogLevel__Default_arn
+  Logging__LogLevel__Microsoft = module.parameter_store.Logging__LogLevel__Microsoft
 }
 module "Policy" {
   source = "./Policies"
@@ -97,4 +101,19 @@ module "database" {
   db_subnet_group_name = module.subnet.db_subnet_group_name
   password = "postgres"
   instance_class = "db.t3.micro"
+  }
+
+  module "parameter_store" {
+    source = "./Parameter-Store"
+    parameter_name = "ConnectionStrings__DefaultConnection"
+    password = module.database.random_password
+    dbname = module.database.dbname
+    username = module.database.username
+    address = module.database.address
+    AllowedHosts_value = "*"
+    Logging__LogLevel__Default_value = "Information"
+    Logging__LogLevel__Microsoft_value = "Warning"
+    parameter_name_AllowedHosts = "AllowedHosts"
+    parameter_name_Logging__LogLevel__Default = "Logging__LogLevel__Default"
+    parameter_name_Logging__LogLevel__Microsoft = "Logging__LogLevel__Microsoft.AspNetCore"
   }

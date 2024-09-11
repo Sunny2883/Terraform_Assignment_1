@@ -78,8 +78,8 @@ resource "aws_iam_role_policy_attachment" "ecs_instance_role_policy_attachment" 
 }
 
 # IAM Instance Profile for the EC2 Role
-resource "aws_iam_instance_profile" "ecs_instance_profile_new" {
-  name = "ecs_instance_profile_new"
+resource "aws_iam_instance_profile" "ecs_instance_profile_project" {
+  name = "ecs_instance_profile_project"
   role = aws_iam_role.ecs_instance_role.name
 }
 

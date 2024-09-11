@@ -10,12 +10,12 @@ output "ecs_instance_role_arn" {
 
 output "ecs_instance_profile_arn" {
   description = "The ARN of the ECS Instance Profile"
-  value       = aws_iam_instance_profile.ecs_instance_profile_new.arn
+  value       = aws_iam_instance_profile.ecs_instance_profile_project.arn
 }
 
 output "ecs_instance_profile_name" {
   description = "The name of the ECS Instance Profile"
-  value       = aws_iam_instance_profile.ecs_instance_profile_new.name
+  value       = aws_iam_instance_profile.ecs_instance_profile_project.name
 }
 output "ecs_task_role_arn" {
   value = aws_iam_role.ecs_task_role.arn
