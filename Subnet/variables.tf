@@ -12,3 +12,6 @@ variable "azs" {
  description = "Availability Zones"
  default     =  ["ap-south-1a", "ap-south-1b"]
 }
+variable "name_db_subnet_group" {
+  
+}

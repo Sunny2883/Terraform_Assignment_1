@@ -29,3 +29,39 @@ resource "aws_route_table_association" "route_table_association" {
   route_table_id = aws_route_table.route_table_assignment_1.id
   
 }
+
+
+
+
+# Subnet in Availability Zone ap-south-1a
+resource "aws_subnet" "subnet_1" {
+  vpc_id                  = var.vpc_id
+  cidr_block              = "192.168.4.0/24"
+  availability_zone       = "ap-south-1a"
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "Subnet-1"
+  }
+}
+
+# Subnet in Availability Zone ap-south-1b
+resource "aws_subnet" "subnet_2" {
+  vpc_id                  = var.vpc_id
+  cidr_block              = "192.168.3.0/24"
+  availability_zone       = "ap-south-1b"
+  map_public_ip_on_launch = false
+
+  tags = {
+    Name = "Subnet-2"
+  }
+}
+
+
+
+
+
+resource "aws_db_subnet_group" "db_subnet_group_name" {
+  name = var.name_db_subnet_group
+  subnet_ids = [ aws_subnet.subnet_1.id, aws_subnet.subnet_2.id ]
+}
