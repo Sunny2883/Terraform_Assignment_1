@@ -31,16 +31,7 @@ resource "aws_ecs_task_definition" "task_def" {
       }
     }
 
-            "healthCheck": {
-        "command": [
-          "CMD-SHELL",
-          "curl -f http://localhost:8080/swagger || exit 1"
-        ],
-        "interval": 30,
-        "timeout": 5,
-        "retries": 3,
-        "startPeriod": 60
-      }
+      
       logConfiguration = {
         logDriver = "awslogs",
         options = {
