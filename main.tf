@@ -49,6 +49,7 @@ module "ALB" {
   security_groups = [module.security_group_assignment_1.security_group_id]
   subnets         = module.subnet.subnet_id
   name            = "ALB_assignment_1"
+  cloudfront_domain_name = module.cloudfront.cloudfront_arn
 }
 
 module "ECS_Services" {
@@ -116,4 +117,8 @@ module "parameter_store" {
   parameter_name_AllowedHosts                 = "AllowedHosts"
   parameter_name_Logging__LogLevel__Default   = "Logging__LogLevel__Default"
   parameter_name_Logging__LogLevel__Microsoft = "Logging__LogLevel__Microsoft.AspNetCore"
+}
+
+module "cloudfront" {
+  source = "./cloudfront"
 }

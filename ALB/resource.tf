@@ -51,7 +51,48 @@ resource "aws_lb_listener" "https" {
   depends_on        = [aws_lb_target_group.this]
 
   default_action {
-    target_group_arn = aws_lb_target_group.this.arn
+    type = "fixed-response"
+    fixed_response {
+      content_type = "text/plain"
+      message_body = "Default HTTPS page"
+      status_code  = "200"
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "host_header_rule" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 100
+
+  action {
     type             = "forward"
+    target_group_arn = aws_lb_target_group.this.arn
+  }
+
+  condition {
+    host_header {
+      values = ["be.sunnykumar.publicvm.com"]
+    }
+  }
+}
+
+resource "aws_lb_listener_rule" "host_header_rule_frontend" {
+  listener_arn = aws_lb_listener.https.arn
+  priority     = 200
+
+  action {
+    type = "redirect"
+    redirect {
+      host        = var.cloudfront_domain_name
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
+    }
+  }
+
+  condition {
+    host_header {
+      values = ["fe.sunnykumar.publicvm.com"]
+    }
   }
 }

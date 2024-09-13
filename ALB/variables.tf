@@ -17,3 +17,6 @@ variable "vpc_id" {
   type = string
 }
 
+variable "cloudfront_domain_name" {
+  type = string
+}
