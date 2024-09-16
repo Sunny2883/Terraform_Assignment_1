@@ -4,7 +4,11 @@ resource "aws_ecs_service" "ecs_service" {
   task_definition = var.task_definition
   
   desired_count   = var.desired_count
-
+    load_balancer {
+    target_group_arn = var.target_group_arn
+    container_name   = "Assignment_task_1"
+    container_port   = 8080
+  }
     deployment_controller {
     type = "ECS"
   }

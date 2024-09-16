@@ -32,7 +32,7 @@ module "ASG" {
   desired_capacity          = 1
   asg_name                  = "asg_assignment"
   min_size                  = 1
-  max_size                  = 2
+  max_size                  = 3
   name                      = ""
   instance_type             = "t2.micro"
   keyname                   = "Project"
@@ -58,6 +58,8 @@ module "ECS_Services" {
   desired_count    = 1
   task_definition  = module.ECS_cluster.task_definition
   cluster_arn      = module.ECS_cluster.cluster_arn
+  target_group_arn = module.ALB.backend_target_group_arn
+  
 }
 
 module "ECS_cluster" {
