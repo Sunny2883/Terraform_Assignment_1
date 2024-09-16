@@ -18,7 +18,7 @@ resource "aws_ecs_task_definition" "task_def" {
       portMappings  = [
         {
           containerPort = 8080
-          hostPort      = 8080
+          hostPort      = 0
         }
       ],
               "healthCheck": {

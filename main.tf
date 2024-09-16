@@ -28,7 +28,7 @@ module "ASG" {
   subnet                    = module.subnet.subnet_id
   security_group_id         = module.security_group_assignment_1.security_group_id
   load_balancer             = module.ALB.alb_arn
-  health_check_type         = "ELB"
+  health_check_type         = "EC2"
   desired_capacity          = 1
   asg_name                  = "asg_assignment"
   min_size                  = 1
