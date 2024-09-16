@@ -21,11 +21,7 @@ variable "username" {
   type        = string
 }
 
-variable "password" {
-  description = "Master password for the database."
-  type        = string
-  sensitive   = true  # Mark this as sensitive to hide it in logs
-}
+
 
 variable "db_name" {
   description = "Name of the database to create."

@@ -28,7 +28,7 @@ module "ASG" {
   subnet                    = module.subnet.subnet_id
   security_group_id         = module.security_group_assignment_1.security_group_id
   load_balancer             = module.ALB.alb_arn
-  health_check_type         = "EC2"
+  health_check_type         = "ELB"
   desired_capacity          = 1
   asg_name                  = "asg_assignment"
   min_size                  = 1
@@ -96,11 +96,10 @@ module "database" {
   engine                 = "postgres"
   engine_version         = "12.16"
   vpc_security_group_ids = [module.security_group_assignment_1.security_group_id]
-  username               = "postgres"
+  username               = "assignmentuser"
   allocated_storage      = 20
-  db_name                = "sunny"
+  db_name                = "assignmentdbs"
   db_subnet_group_name   = module.subnet.db_subnet_group_name
-  password               = "postgres"
   instance_class         = "db.t3.micro"
 }
 

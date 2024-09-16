@@ -30,6 +30,7 @@ launch_template {
     version = "$Latest"
 
   }
+  
 }
 
 resource "aws_autoscaling_attachment" "this" {

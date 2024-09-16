@@ -5,5 +5,11 @@ resource "aws_ecs_service" "ecs_service" {
   
   desired_count   = var.desired_count
 
+    deployment_controller {
+    type = "ECS"
+  }
+
+  deployment_maximum_percent = 200
+  deployment_minimum_healthy_percent = 100
   
 }
