@@ -29,9 +29,9 @@ module "ASG" {
   security_group_id         = module.security_group_assignment_1.security_group_id
   load_balancer             = module.ALB.alb_arn
   health_check_type         = "EC2"
-  desired_capacity          = 1
+  desired_capacity          = 2
   asg_name                  = "asg_assignment"
-  min_size                  = 1
+  min_size                  = 2
   max_size                  = 3
   name                      = ""
   instance_type             = "t2.micro"
@@ -55,7 +55,7 @@ module "ALB" {
 module "ECS_Services" {
   source           = "./ECS_Services"
   ecs_service_name = "Service_assignment_1"
-  desired_count    = 1
+  desired_count    = 2
   task_definition  = module.ECS_cluster.task_definition
   cluster_arn      = module.ECS_cluster.cluster_arn
   target_group_arn = module.ALB.backend_target_group_arn
@@ -67,9 +67,9 @@ module "ECS_cluster" {
   cluster_name                 = "cluster_assignment"
   family_name                  = "Assignment_family_1"
   task_name                    = "Assignment_task_1"
-  memory                       = 512
-  cpu                          = 256
-  image_url                    = "396608771618.dkr.ecr.ap-south-1.amazonaws.com/projectrepo:latest"
+  memory                       = 256
+  cpu                          = 128
+  image_url                    = module.ECR.ecr_repository_url
   execution_role_arn           = module.Policy.ecs_task_execution_role_arn
   task_role_arn                = module.Policy.ecs_task_role_arn
   log_stream_prefix            = "assignment"
@@ -122,4 +122,9 @@ module "parameter_store" {
 
 module "cloudfront" {
   source = "./cloudfront"
+}
+
+module "ECR" {
+  source = "./ECR"
+  
 }

@@ -7,7 +7,8 @@ resource "aws_ecs_task_definition" "task_def" {
   network_mode          = "bridge"
   execution_role_arn    = var.execution_role_arn
   task_role_arn         = var.task_role_arn
-
+  memory = "512"
+  cpu = "256"
   container_definitions = jsonencode([
     {
       name          = var.task_name
@@ -18,7 +19,7 @@ resource "aws_ecs_task_definition" "task_def" {
       portMappings  = [
         {
           containerPort = 8080
-          hostPort      = 8080
+          hostPort      = 0
         }
       ],
               "healthCheck": {
