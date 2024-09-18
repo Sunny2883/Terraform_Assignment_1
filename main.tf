@@ -30,7 +30,7 @@ module "ASG" {
   load_balancer             = module.ALB.alb_arn
   health_check_type         = "EC2"
   desired_capacity          = 2
-  asg_name                  = "asg_assignment"
+  asg_name                  = "asg_assignment_1"
   min_size                  = 2
   max_size                  = 3
   name                      = ""

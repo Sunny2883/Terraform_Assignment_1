@@ -13,7 +13,7 @@ resource "aws_launch_template" "ecs_launch_tempelate" {
   }
 }
 
-resource "aws_autoscaling_group" "ASG_assignment" {
+resource "aws_autoscaling_group" "ASG_assignment_1" {
   name                      = var.asg_name
   max_size                  = var.max_size
   min_size                  = var.min_size
@@ -34,6 +34,6 @@ launch_template {
 }
 
 resource "aws_autoscaling_attachment" "this" {
-  autoscaling_group_name = aws_autoscaling_group.ASG_assignment.id
+  autoscaling_group_name = aws_autoscaling_group.ASG_assignment_1.id
   lb_target_group_arn    = var.alb_arn
 }

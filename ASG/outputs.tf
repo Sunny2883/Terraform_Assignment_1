@@ -1,7 +1,7 @@
 output "asg_id" {
-  value = aws_autoscaling_group.ASG_assignment.id
+  value = aws_autoscaling_group.ASG_assignment_1.id
 }
 
 output "asg_arn" {
-  value = aws_autoscaling_group.ASG_assignment.arn
+  value = aws_autoscaling_group.ASG_assignment_1.arn
 }
