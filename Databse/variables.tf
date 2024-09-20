@@ -42,3 +42,6 @@ variable "vpc_security_group_ids" {
 variable "instance_class" {
   type = string
 }
+variable "identifier" {
+  type = string
+}

@@ -10,6 +10,7 @@ resource "aws_db_instance" "postgresrds" {
   publicly_accessible = false
   instance_class = var.instance_class
   skip_final_snapshot = true
+  identifier = var.identifier
 }
 
 resource "random_password" "database_password" {

@@ -26,7 +26,7 @@ module "ASG" {
   source                    = "./ASG"
   image_id                  = "ami-07c0f8a42b483e4cf"
   subnet                    = module.subnet.subnet_id
-  security_group_id         = module.security_group_assignment_1.security_group_id
+  security_group_id         = module.security_group_assignment_1.main_security_group_id
   load_balancer             = module.ALB.alb_arn
   health_check_type         = "EC2"
   desired_capacity          = 2
@@ -40,14 +40,14 @@ module "ASG" {
   user_data                 = filebase64("./userdata.sh")
   alb_arn                   = module.ALB.backend_target_group_arn
   iam_instance_profile_name = module.Policy.ecs_instance_profile_name
-  use_fargate = false
+  use_fargate = true
 }
 
 module "ALB" {
   source          = "./ALB"
   vpc_id          = module.VPC.vpc_id
-  use_fargate = false
-  security_groups = [module.security_group_assignment_1.security_group_id]
+  use_fargate = true
+  security_groups = [module.security_group_assignment_1.main_security_group_id]
   subnets         = module.subnet.subnet_id
   name            = "ALB_assignment_1"
   cloudfront_domain_name = module.cloudfront.cloudfront_arn
@@ -59,11 +59,11 @@ module "ECS_Services" {
   desired_count    = 2
   task_definition  = module.ECS_cluster.task_definition
   cluster_arn      = module.ECS_cluster.cluster_arn
-  use_fargate = false
+  use_fargate = true
   subnets = module.subnet.subnet_id
-  security_group_id = module.security_group_assignment_1.security_group_id
-  ec2_target_group_arn = module.ALB.backend_target_group_arn
-  fargate_target_group_arn = null
+  security_group_id = module.security_group_assignment_1.ecs_security_group_id
+  ec2_target_group_arn = null
+  fargate_target_group_arn = module.ALB.backend_target_group_arn
   
 }
 
@@ -85,7 +85,7 @@ module "ECS_cluster" {
   allowedhost                  = module.parameter_store.allwedhost_arn
   Logging__LogLevel__Default   = module.parameter_store.Logging__LogLevel__Default_arn
   Logging__LogLevel__Microsoft = module.parameter_store.Logging__LogLevel__Microsoft
-  use_fargate = false
+  use_fargate = true
 }
 module "Policy" {
   source = "./Policies"
@@ -103,12 +103,13 @@ module "database" {
   source                 = "./Databse"
   engine                 = "postgres"
   engine_version         = "12.16"
-  vpc_security_group_ids = [module.security_group_assignment_1.security_group_id]
+  vpc_security_group_ids = [module.security_group_assignment_1.db_security_group_id]
   username               = "assignmentuser"
   allocated_storage      = 20
   db_name                = "assignmentdbs"
   db_subnet_group_name   = module.subnet.db_subnet_group_name
   instance_class         = "db.t3.micro"
+  identifier = "assignment-db-instance"
 }
 
 module "parameter_store" {
