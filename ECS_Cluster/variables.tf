@@ -55,3 +55,9 @@ variable "Logging__LogLevel__Default" {
 variable "Logging__LogLevel__Microsoft" {
   type = string
 }
+
+variable "use_fargate" {
+  description = "Set to true to use Fargate launch type"
+  type        = bool
+  default     = false
+}

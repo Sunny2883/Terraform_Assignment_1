@@ -13,6 +13,21 @@ variable "cluster_arn" {
 }
 
 
-variable "target_group_arn" {
+
+variable "use_fargate" {
+  description = "Set to true to use Fargate launch type"
+  type        = bool
+  default     = false
+}
+variable "security_group_id" {
+  type = string
+}
+variable "subnets" {
+  type = list(string)
+}
+variable "ec2_target_group_arn" {
+  type = string
+}
+variable "fargate_target_group_arn" {
   type = string
 }

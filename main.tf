@@ -40,12 +40,13 @@ module "ASG" {
   user_data                 = filebase64("./userdata.sh")
   alb_arn                   = module.ALB.backend_target_group_arn
   iam_instance_profile_name = module.Policy.ecs_instance_profile_name
+  use_fargate = false
 }
 
 module "ALB" {
   source          = "./ALB"
   vpc_id          = module.VPC.vpc_id
-  target_type     = "instance"
+  use_fargate = false
   security_groups = [module.security_group_assignment_1.security_group_id]
   subnets         = module.subnet.subnet_id
   name            = "ALB_assignment_1"
@@ -58,7 +59,11 @@ module "ECS_Services" {
   desired_count    = 2
   task_definition  = module.ECS_cluster.task_definition
   cluster_arn      = module.ECS_cluster.cluster_arn
-  target_group_arn = module.ALB.backend_target_group_arn
+  use_fargate = false
+  subnets = module.subnet.subnet_id
+  security_group_id = module.security_group_assignment_1.security_group_id
+  ec2_target_group_arn = module.ALB.backend_target_group_arn
+  fargate_target_group_arn = null
   
 }
 
@@ -80,6 +85,7 @@ module "ECS_cluster" {
   allowedhost                  = module.parameter_store.allwedhost_arn
   Logging__LogLevel__Default   = module.parameter_store.Logging__LogLevel__Default_arn
   Logging__LogLevel__Microsoft = module.parameter_store.Logging__LogLevel__Microsoft
+  use_fargate = false
 }
 module "Policy" {
   source = "./Policies"

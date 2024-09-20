@@ -56,3 +56,7 @@ variable "keyname" {
 variable "iam_instance_profile_name" {
   type = string
 }
+variable "use_fargate" {
+  type = bool
+  default = false
+}

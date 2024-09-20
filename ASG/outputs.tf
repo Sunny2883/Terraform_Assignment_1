@@ -1,7 +1,7 @@
 output "asg_id" {
-  value = aws_autoscaling_group.ASG_assignment_1.id
+  value = var.use_fargate ? null : aws_autoscaling_group.ASG_assignment_1[0].id
 }
 
 output "asg_arn" {
-  value = aws_autoscaling_group.ASG_assignment_1.arn
+  value = var.use_fargate ? null : aws_autoscaling_group.ASG_assignment_1[0].arn
 }

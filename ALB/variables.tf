@@ -13,10 +13,7 @@ variable "security_groups" {
   description = "A list of security group IDs to associate with the resource, which control inbound and outbound traffic."
 }
 
-variable "target_type" {
-  type = string
-  description = "The type of target for the load balancer, such as 'instance' or 'ip'. This specifies how traffic will be routed."
-}
+
 
 variable "vpc_id" {
   type = string
@@ -26,4 +23,9 @@ variable "vpc_id" {
 variable "cloudfront_domain_name" {
   type = string
   description = "The domain name of the CloudFront distribution associated with the resource. This is used for routing and access control."
+}
+
+variable "use_fargate" {
+  type = bool
+  default = false
 }
